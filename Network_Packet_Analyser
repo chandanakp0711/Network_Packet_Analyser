@@ -1,0 +1,26 @@
+from scapy.all import sniff, conf, get_if_list
+
+def packet_callback(packet):
+    try:
+        print(packet.summary())
+    except Exception as e:
+        print(f"Error processing packet: {e}")
+
+if __name__ == "__main__":
+    print("Packet Sniffer - Educational Use Only")
+    print("Press Ctrl+C to stop sniffing...\n")
+
+    # List available interfaces
+    print("Available network interfaces:")
+    interfaces = get_if_list()
+    for i, iface in enumerate(interfaces):
+        print(f"{i}: {iface}")
+
+    # Prompt user to select an interface
+    iface_index = int(input("\nSelect interface index: "))
+    selected_iface = interfaces[iface_index]
+
+    print(f"\nSniffing on interface: {selected_iface}")
+
+    # Start sniffing on the selected interface
+    sniff(iface=selected_iface, prn=packet_callback, store=False)
